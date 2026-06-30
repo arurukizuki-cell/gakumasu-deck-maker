@@ -1,0 +1,337 @@
+body {
+    margin: 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    overflow-y: scroll;
+}
+
+/* ヘッダー */
+.app-header {
+    background-color: #fff;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.header-logo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ff4081;
+}
+
+/* ボタン類 */
+.btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.btn-primary { background-color: #ff4081; color: white; }
+.btn-danger { background-color: #ff5252; color: white; }
+.btn-secondary { background-color: #e0e0e0; color: #333; }
+
+/* ホーム画面 */
+#home-view {
+    background: linear-gradient(135deg, #fce4ec, #e1f5fe);
+    min-height: 100vh;
+}
+.home-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: calc(100vh - 60px);
+}
+.empty-state {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    margin-top: 100px;
+}
+.empty-state h3 { color: #ff4081; }
+.btn-create-center {
+    background: linear-gradient(135deg, #ff4081, #00e5ff);
+    color: white; border: none; padding: 15px 30px; border-radius: 30px;
+    font-size: 1rem; font-weight: bold; cursor: pointer;
+}
+.floating-btn {
+    position: fixed; right: 30px; bottom: 30px;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: linear-gradient(135deg, #ff4081, #00e5ff);
+    color: white; border: none; font-size: 2rem; cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ホームのデッキリスト */
+.home-deck-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+    padding-top: 20px;
+}
+.home-deck-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.03);
+    transition: transform 0.2s;
+}
+.home-deck-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* サムネイル枠を学マスカード比率（1:1正方形）*/
+.deck-thumbnail-wrapper {
+    width: 110px;
+    height: 110px;
+    margin-bottom: 12px;
+}
+.single-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 比率を保ったまま枠に収める */
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.no-img { width: 100%; height: 100%; background: #eee; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 0.8rem; }
+.deck-info-title {
+    color: #333; font-size: 0.9rem; font-weight: bold; width: 100%;
+    text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* 🛠️ デッキ構築画面 */
+.main-container { padding: 20px; max-width: 1000px; margin: 0 auto; }
+.deck-list-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+.deck-header { display: flex; justify-content: space-between; align-items: center; }
+.section-divider { border: 0; height: 1px; background: #ddd; margin: 15px 0; }
+
+/* 編成エリアの独立スクロール */
+#deck-list {
+    display: grid; /* 💡 flex から grid に変更 */
+    grid-template-columns: repeat(7, 110px); /* 💡 カード幅(110px)で自動配置 */
+    justify-content: start; /* 💡 左詰めに固定 */
+    gap: 12px;
+    max-height: 290px;
+    min-height: 140px; 
+    overflow-y: auto;  
+    padding-right: 5px;
+    padding-bottom: 5px; /* 💡 ホバー拡大時にはみ出ないように余白を追加 */
+}
+
+/* （中略：スクロールバー装飾のCSSはそのまま残してください） */
+
+.card-pool-section {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+
+/* スクロールバー装飾 */
+#deck-list::-webkit-scrollbar,
+#card-pool::-webkit-scrollbar {
+    width: 6px;
+}
+#deck-list::-webkit-scrollbar-track,
+#card-pool::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+#deck-list::-webkit-scrollbar-thumb,
+#card-pool::-webkit-scrollbar-thumb {
+    background: #ff4081;
+    border-radius: 3px;
+}
+
+
+#card-pool {
+    display: grid; /* 💡 flex から grid に変更 */
+    grid-template-columns: repeat(7, 110px); /* 💡 カード幅(110px)で自動配置 */
+    justify-content: start; /* 💡 左詰めに固定 */
+    gap: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
+    padding-bottom: 5px; /* 💡 ホバー拡大時にはみ出ないように余白を追加 */
+}
+
+/* カードの見た目を学マスカード比率 */
+.card-item { 
+    width: 110px; /* 90pxから110pxに大きく */
+    cursor: pointer; 
+    text-align: center; 
+    transition: transform 0.1s; 
+}
+.card-item:hover { transform: scale(1.05); }
+
+.card-item img { 
+    width: 100%; 
+    height: 110px; /* 高さを横幅と揃えて完全な正方形に固定 */
+    object-fit: cover; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+}
+.card-item p { font-size: 0.8rem; margin: 5px 0; color: #555; }
+
+.search-bar-container { margin-bottom: 20px; display: flex; gap: 10px; }
+.search-bar-container input, .search-bar-container select { padding: 8px; border-radius: 6px; border: 1px solid #ccc; }
+.search-bar-container input { flex: 1; }
+
+/* デッキカードのアクション領域用（画像保存・削除ボタン） */
+.deck-actions-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+    width: 100%;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 10px;
+}
+.action-icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #888;
+    transition: color 0.2s, transform 0.2s;
+    padding: 5px;
+}
+.action-icon-btn:hover {
+    color: #ff4081; /* ホバー時にピンク色に */
+    transform: scale(1.1);
+}
+
+/* 🟢 追加 */
+#preview-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    width: 600px;
+}
+.preview-card {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* 絞り込みエリアのスタイリング */
+.filter-section {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.filter-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* 検索バーを大きく広げる */
+.filter-input-large {
+    flex: 2; 
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* プルダウンのサイズ調整 */
+.filter-select {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.plan-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.site-footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px; /* 文字を少し小さくして目立たせすぎないようにする */
+    color: #666;     /* 文字色を少し薄いグレーにする */
+    border-top: 1px solid #eee; /* 上にうっすら線を入れると区切りが分かりやすい */
+    margin-top: 40px; /* カードリストとの間に少し余白を作る */
+}
+.site-footer p {
+    margin: 4px 0; /* 行間を少し詰める */
+}
+
+/* =========================================
+   📱 スマホ対応（レスポンシブ）用の追加CSS
+   ========================================= */
+@media screen and (max-width: 768px) {
+    /* 1. 編成エリアとカード一覧の「横7枚固定」を解除し、画面幅に合わせて自動で折り返す */
+    #deck-list, #card-pool {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        justify-content: center; /* スマホでは中央寄せの方が見栄えが綺麗です */
+    }
+
+    /* 2. カードの幅をスマホ画面に合わせて柔軟にする */
+    .card-item {
+        width: 100%;
+        max-width: 110px;
+    }
+    .card-item img {
+        height: auto;
+        aspect-ratio: 1 / 1; /* 完全な正方形を維持する魔法のコード */
+    }
+
+    /* 3. 検索バーとプルダウンを縦並びにして、指でタップしやすくする */
+    .filter-controls {
+        flex-direction: column; /* 横並びから縦並びに変更 */
+        align-items: stretch;
+    }
+    
+    .filter-input-large, .filter-select {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 16px !important; /* iPhoneで入力時に勝手にズームされるのを防ぐ */
+    }
+
+    /* 4. ホーム画面のデッキリストもスマホ幅に最適化 */
+    .home-deck-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        justify-content: center;
+    }
+    
+    /* 5. プレビュー用コンテナの固定幅（600px）を解除 */
+    #preview-content {
+        width: 100%;
+    }
+}
